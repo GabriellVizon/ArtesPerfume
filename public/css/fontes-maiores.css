@@ -1,0 +1,127 @@
+/* ArtesPerfume — aumento de tipografia
+Carregue este arquivo DEPOIS do Tailwind/estilos principais:
+<link rel="stylesheet" href="/css/fontes-maiores.css">
+*/
+
+body {
+  font-size: 16px !important;
+  line-height: 1.6;
+}
+
+[class*="text-label-sm"] {
+  font-size: 11px !important;
+  line-height: 16px !important;
+}
+[class*="text-label-md"] {
+  font-size: 13px !important;
+  line-height: 19px !important;
+}
+[class*="text-label-lg"] {
+  font-size: 14px !important;
+  line-height: 20px !important;
+}
+[class*="text-body-md"] {
+  font-size: 16px !important;
+  line-height: 27px !important;
+}
+[class*="text-body-lg"] {
+  font-size: 18px !important;
+  line-height: 30px !important;
+}
+[class*="text-body-xl"] {
+  font-size: 21px !important;
+  line-height: 35px !important;
+}
+[class*="text-headline-sm"] {
+  font-size: 26px !important;
+  line-height: 34px !important;
+}
+[class*="text-headline-md"] {
+  font-size: 34px !important;
+  line-height: 42px !important;
+}
+[class*="text-headline-lg-mobile"] {
+  font-size: 31px !important;
+  line-height: 39px !important;
+}
+[class*="text-headline-lg"] {
+  font-size: 42px !important;
+  line-height: 51px !important;
+}
+[class*="text-display-lg-mobile"] {
+  font-size: 39px !important;
+  line-height: 47px !important;
+}
+[class*="text-display-lg"] {
+  font-size: 63px !important;
+  line-height: 71px !important;
+}
+
+input, textarea, select, button {
+  font-size: 16px;
+}
+input::placeholder, textarea::placeholder {
+  font-size: 15px;
+}
+
+/* ADMIN — aumento um pouco maior */
+body:has(#curatorLoginForm) [class*="text-label-sm"],
+body:has(aside.fixed) [class*="text-label-sm"] {
+  font-size: 12px !important;
+  line-height: 17px !important;
+}
+body:has(#curatorLoginForm) [class*="text-label-md"],
+body:has(aside.fixed) [class*="text-label-md"] {
+  font-size: 14px !important;
+  line-height: 20px !important;
+}
+body:has(#curatorLoginForm) [class*="text-label-lg"],
+body:has(aside.fixed) [class*="text-label-lg"] {
+  font-size: 15px !important;
+  line-height: 21px !important;
+}
+body:has(#curatorLoginForm) [class*="text-body-md"],
+body:has(aside.fixed) [class*="text-body-md"] {
+  font-size: 17px !important;
+  line-height: 29px !important;
+}
+body:has(#curatorLoginForm) [class*="text-body-lg"],
+body:has(aside.fixed) [class*="text-body-lg"] {
+  font-size: 19px !important;
+  line-height: 31px !important;
+}
+body:has(#curatorLoginForm) [class*="text-headline-sm"],
+body:has(aside.fixed) [class*="text-headline-sm"] {
+  font-size: 29px !important;
+  line-height: 37px !important;
+}
+body:has(aside.fixed) [class*="text-headline-lg"] {
+  font-size: 44px !important;
+  line-height: 53px !important;
+}
+body:has(#curatorLoginForm) input,
+body:has(#curatorLoginForm) textarea,
+body:has(#curatorLoginForm) select,
+body:has(#curatorLoginForm) button,
+body:has(aside.fixed) input,
+body:has(aside.fixed) textarea,
+body:has(aside.fixed) select,
+body:has(aside.fixed) button {
+  font-size: 17px !important;
+}
+body:has(aside.fixed) aside a {
+  line-height: 1.45 !important;
+}
+
+@media (max-width: 640px) {
+  [class*="text-body-md"] {
+    font-size: 16px !important;
+  }
+  [class*="text-label-sm"] {
+    font-size: 10.5px !important;
+  }
+  [class*="text-headline-lg-mobile"] {
+    font-size: 30px !important;
+    line-height: 38px !important;
+  }
+}
