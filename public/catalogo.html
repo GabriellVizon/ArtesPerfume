@@ -1,7 +1,72 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Catálogo | Aura Noir</title><link rel="stylesheet" href="/assets/site.css"><script src="/assets/site.js" defer></script><script src="/assets/catalogo.js" defer></script></head><body>
-<header class="site-header"><div class="container inner"><a class="brand" href="/"><span class="brand-mark"><span>✦</span></span><span class="brand-text"><strong data-brand-name>Aura Noir</strong><small data-brand-subtitle>Atelier</small></span></a><nav class="desktop-nav"><a data-nav="inicio" href="/">Início</a><a data-nav="catalogo" href="/catalogo.html">Catálogo</a><a data-nav="favoritos" href="/favoritos.html">Favoritos <span class="favorite-count" data-favorite-count hidden></span></a><a href="/admin/">Admin</a></nav></div></header>
-<main class="page"><div class="container catalog-head"><p class="eyebrow">Edição limitada • acervo atual</p><h1 class="display">Catálogo de Perfumes</h1><p class="muted">Explore o acervo, filtre as fragrâncias e abra uma visualização rápida antes de entrar nos detalhes.</p><div class="catalog-tools"><div class="searchbox"><input id="search" type="search" placeholder="Buscar perfume por nome ou descrição..."></div><button id="refresh" class="btn secondary" type="button">Atualizar</button></div><div class="filters"><button class="filter active" data-filter="todos">Todos</button><button class="filter" data-filter="disponiveis">Disponíveis</button><button class="filter" data-filter="novos">Novidades</button><button class="filter" data-filter="destaques">Destaques</button></div></div>
-<div class="container"><div id="catalog-status" class="status-strip">Carregando catálogo…</div><section id="catalog-grid" class="cards" aria-live="polite"></section><div id="catalog-empty" class="empty-state" hidden><h2>Nenhuma fragrância localizada</h2><p>Tente outro termo ou limpe os filtros aplicados.</p></div></div></main>
-<dialog id="quick-modal" class="modal"><div class="modal-grid"><div class="modal-media"><img id="quick-image" alt=""></div><div class="modal-body"><button class="modal-close" type="button" id="quick-close">×</button><p class="eyebrow" id="quick-origin">Curadoria</p><h2 id="quick-name"></h2><p id="quick-desc"></p><div class="details-price" id="quick-price"></div><div class="modal-actions"><a id="quick-details" class="btn secondary">Ver detalhes</a><a id="quick-interest" class="btn" target="_blank" rel="noopener noreferrer">Tenho interesse</a></div></div></div></dialog>
-<nav class="bottom-nav"><a data-nav="inicio" href="/"><span>⌂</span><span>Início</span></a><a data-nav="catalogo" href="/catalogo.html"><span>◫</span><span>Catálogo</span></a><a href="/catalogo.html"><span>✦</span><span>Detalhes</span></a><a data-nav="favoritos" href="/favoritos.html"><span>♡</span><span>Favoritos</span></a></nav>
-<footer class="site-footer"><div class="container"><p>Os valores são informativos. Não há checkout ou carrinho nesta versão.</p><p>Atendimento e disponibilidade pelo WhatsApp.</p></div></footer></body></html>
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Catálogo | Aura Noir</title>
+    <link rel="stylesheet" href="/assets/site.css">
+    <script src="/assets/site.js" defer></script>
+    <script src="/assets/catalogo.js" defer></script>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container inner"><a class="brand" href="/"><span class="brand-mark"><span>✦</span></span><span
+                    class="brand-text"><strong data-brand-name>Aura Noir</strong><small
+                        data-brand-subtitle>Atelier</small></span></a>
+            <nav class="desktop-nav"><a data-nav="inicio" href="/">Início</a><a data-nav="catalogo"
+                    href="/catalogo.html">Catálogo</a><a data-nav="favoritos" href="/favoritos.html">Favoritos <span
+                        class="favorite-count" data-favorite-count hidden></span></a><a href="/admin/">Admin</a></nav>
+        </div>
+    </header>
+    <main class="page">
+        <div class="container catalog-head">
+            <p class="eyebrow">Edição limitada • acervo atual</p>
+            <h1 class="display">Catálogo de Perfumes</h1>
+            <p class="muted">Explore o acervo, filtre as fragrâncias e abra uma visualização rápida antes de entrar nos
+                detalhes.</p>
+            <div class="catalog-tools">
+                <div class="searchbox"><input id="search" type="search"
+                        placeholder="Buscar perfume por nome ou descrição..."></div><button id="refresh"
+                    class="btn secondary" type="button">Atualizar</button>
+            </div>
+            <div class="filters"><button class="filter active" data-filter="todos">Todos</button><button class="filter"
+                    data-filter="disponiveis">Disponíveis</button><button class="filter"
+                    data-filter="novos">Novidades</button><button class="filter"
+                    data-filter="destaques">Destaques</button></div>
+        </div>
+        <div class="container">
+            <div id="catalog-status" class="status-strip">Carregando catálogo…</div>
+            <section id="catalog-grid" class="cards" aria-live="polite"></section>
+            <div id="catalog-empty" class="empty-state" hidden>
+                <h2>Nenhuma fragrância localizada</h2>
+                <p>Tente outro termo ou limpe os filtros aplicados.</p>
+            </div>
+        </div>
+    </main>
+    <dialog id="quick-modal" class="modal">
+        <div class="modal-grid">
+            <div class="modal-media"><img id="quick-image" alt=""></div>
+            <div class="modal-body"><button class="modal-close" type="button" id="quick-close">×</button>
+                <p class="eyebrow" id="quick-origin">Curadoria</p>
+                <h2 id="quick-name"></h2>
+                <p id="quick-desc"></p>
+                <div class="details-price" id="quick-price"></div>
+                <div class="modal-actions"><a id="quick-details" class="btn secondary">Ver detalhes</a><a
+                        id="quick-interest" class="btn" target="_blank" rel="noopener noreferrer">Tenho interesse</a>
+                </div>
+            </div>
+        </div>
+    </dialog>
+    <nav class="bottom-nav"><a data-nav="inicio" href="/"><span>⌂</span><span>Início</span></a><a data-nav="catalogo"
+            href="/catalogo.html"><span>◫</span><span>Catálogo</span></a><a
+            href="/favoritos.html"><span>♡</span><span>Favoritos</span></a></nav>
+    <footer class="site-footer">
+        <div class="container">
+            <p>Atendimento e disponibilidade pelo WhatsApp.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
