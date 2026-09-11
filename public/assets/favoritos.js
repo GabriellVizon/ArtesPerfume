@@ -1,5 +1,24 @@
-document.addEventListener('DOMContentLoaded',async()=>{await AP.initShell('favoritos');const list=document.getElementById('favorites-list'),empty=document.getElementById('favorites-empty'),actions=document.getElementById('favorites-actions');let catalog=[];
-  function render(){const ids=AP.getFavorites();const products=catalog.filter(p=>ids.includes(String(p.id)));list.replaceChildren();products.forEach(p=>{const article=document.createElement('article');article.className='favorite-card';article.innerHTML=`<img src="${AP.productImage(p)}" alt=""><div><p class="eyebrow">${p.origem==='manual'?'Seleção da loja':'Curadoria'}</p><h3>${AP.escapeHtml(p.nome)}</h3><p>${AP.escapeHtml(p.descricao||'')}</p><div class="price" style="margin-top:8px">${AP.price(p.preco)}</div></div><div class="actions"><a class="btn secondary" href="/detalhes.html?id=${encodeURIComponent(p.id)}">Ver detalhes</a><button class="btn ghost" data-remove="${String(p.id).replaceAll('"','&quot;')}" type="button">Remover</button></div>`;list.append(article)});empty.hidden=products.length!==0;actions.hidden=products.length===0;AP.updateFavoriteCounters();}
-  try{catalog=(await AP.loadCatalog()).products;render()}catch(e){empty.hidden=false;empty.querySelector('h2').textContent='Não foi possível carregar seus favoritos';empty.querySelector('p').textContent=e.message;}
-  list.addEventListener('click',e=>{const b=e.target.closest('[data-remove]');if(!b)return;AP.setFavorites(AP.getFavorites().filter(id=>id!==b.dataset.remove));render();AP.toast('Perfume removido dos favoritos.')});document.getElementById('clear-favorites').addEventListener('click',()=>{if(confirm('Limpar todos os favoritos deste navegador?')){AP.setFavorites([]);render();}});
+document.addEventListener('DOMContentLoaded',async()=>{
+  AP.initShell('favoritos');
+  const list=document.getElementById('favorites-list'),empty=document.getElementById('favorites-empty'),actions=document.getElementById('favorites-actions');
+  let catalog=[];
+
+  function render(){
+    const ids=AP.getFavorites();
+    const products=catalog.filter(p=>ids.includes(String(p.id)));
+    list.replaceChildren();
+    products.forEach(p=>{
+      const article=document.createElement('article');article.className='favorite-card';
+      article.innerHTML=`<img loading="lazy" decoding="async" src="${AP.productImage(p)}" alt=""><div><p class="eyebrow">${p.origem==='manual'?'Seleção da loja':'Curadoria'}</p><h3>${AP.escapeHtml(p.nome)}</h3><p>${AP.escapeHtml(p.descricao||'')}</p><div class="price" style="margin-top:8px">${AP.price(p.preco)}</div></div><div class="actions"><a class="btn secondary" href="${AP.detailHref(p.id, 'favoritos')}">Ver detalhes</a><button class="btn ghost" data-remove="${String(p.id).replaceAll('"','&quot;')}" type="button">Remover</button></div>`;
+      list.append(article);
+    });
+    empty.hidden=products.length!==0;actions.hidden=products.length===0;AP.updateFavoriteCounters();
+  }
+
+  window.addEventListener('ap:catalog-updated',e=>{catalog=e.detail.products||[];render()});
+
+  try{catalog=(await AP.loadCatalog()).products;render()}
+  catch(e){empty.hidden=false;empty.querySelector('h2').textContent='Não foi possível carregar seus favoritos';empty.querySelector('p').textContent=e.message;}
+  list.addEventListener('click',e=>{const b=e.target.closest('[data-remove]');if(!b)return;AP.setFavorites(AP.getFavorites().filter(id=>id!==b.dataset.remove));render();AP.toast('Perfume removido dos favoritos.')});
+  document.getElementById('clear-favorites').addEventListener('click',()=>{if(confirm('Limpar todos os favoritos deste navegador?')){AP.setFavorites([]);render();}});
 });

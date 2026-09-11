@@ -94,21 +94,26 @@ document.addEventListener('DOMContentLoaded',async()=>{
 
     const source=await readFile(file);
     const img=await loadImage(source);
-    const maxSide=1400;
-    const scale=Math.min(1,maxSide/Math.max(img.naturalWidth||img.width,img.naturalHeight||img.height));
-    const width=Math.max(1,Math.round((img.naturalWidth||img.width)*scale));
-    const height=Math.max(1,Math.round((img.naturalHeight||img.height)*scale));
-    const canvas=document.createElement('canvas');
-    canvas.width=width;
-    canvas.height=height;
-    const ctx=canvas.getContext('2d',{alpha:false});
-    ctx.fillStyle='#ffffff';
-    ctx.fillRect(0,0,width,height);
-    ctx.drawImage(img,0,0,width,height);
+    const originalWidth=img.naturalWidth||img.width;
+    const originalHeight=img.naturalHeight||img.height;
+    const targetLength=320000;
 
-    for(const quality of [0.84,0.74,0.64,0.54]){
-      const dataUrl=canvas.toDataURL('image/jpeg',quality);
-      if(dataUrl.length<=2_800_000) return dataUrl;
+    for(const maxSide of [1200,1000,850,700]){
+      const scale=Math.min(1,maxSide/Math.max(originalWidth,originalHeight));
+      const width=Math.max(1,Math.round(originalWidth*scale));
+      const height=Math.max(1,Math.round(originalHeight*scale));
+      const canvas=document.createElement('canvas');
+      canvas.width=width;
+      canvas.height=height;
+      const ctx=canvas.getContext('2d',{alpha:false});
+      ctx.fillStyle='#ffffff';
+      ctx.fillRect(0,0,width,height);
+      ctx.drawImage(img,0,0,width,height);
+
+      for(const quality of [0.82,0.72,0.62,0.52,0.44]){
+        const dataUrl=canvas.toDataURL('image/jpeg',quality);
+        if(dataUrl.length<=targetLength) return dataUrl;
+      }
     }
     throw new Error('A foto continuou muito grande após a otimização. Tente outra imagem.');
   }
@@ -183,6 +188,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
       const result=id
         ? await AdminAP.api(`/api/admin/produtos/${encodeURIComponent(id)}`,{method:'PATCH',body:JSON.stringify(payload)})
         : await AdminAP.api('/api/admin/produtos',{method:'POST',body:JSON.stringify(payload)});
+      await AdminAP.invalidatePublicCache();
       message('Alterações salvas com sucesso.');
       if(!id){
         setTimeout(()=>location.replace(`/admin/produto.html?id=${encodeURIComponent(result.id)}`),600);
@@ -201,6 +207,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
     if(!id||!confirm('Confirmar remoção/arquivamento deste perfume?'))return;
     try{
       await AdminAP.api(`/api/admin/produtos/${encodeURIComponent(id)}`,{method:'DELETE'});
+      await AdminAP.invalidatePublicCache();
       location.replace('/admin/dashboard.html');
     }catch(e){
       message(e.message,true);

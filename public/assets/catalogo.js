@@ -1,13 +1,62 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  await AP.initShell('catalogo'); AP.bindFavoriteButtons();
+  AP.initShell('catalogo');
+  AP.bindFavoriteButtons();
   const grid = document.getElementById('catalog-grid'), empty = document.getElementById('catalog-empty'), status = document.getElementById('catalog-status'), search = document.getElementById('search');
   const modal = document.getElementById('quick-modal'); let products = [], active = 'todos';
-  function matches(p) { const q = search.value.trim().toLowerCase(); const text = `${p.nome || ''} ${p.descricao || ''}`.toLowerCase(); const byQ = !q || text.includes(q); const byF = active === 'todos' || (active === 'disponiveis' && p.estoque !== 0) || (active === 'novos' && p.novo) || (active === 'destaques' && (p.destaque || p.recomendado)); return byQ && byF; }
-  function render() { grid.replaceChildren(); const list = products.filter(matches); list.forEach(p => grid.append(AP.card(p, { quick: true }))); empty.hidden = list.length > 0; }
-  async function load() { status.textContent = 'Atualizando catálogo…'; try { const result = await AP.loadCatalog(); products = result.products; status.textContent = result.mode === 'demo' ? '• Produtos ilustrativos' : `Catálogo atualizado com a conta da loja • ${products.length} produto(s).`; render(); } catch (e) { status.textContent = e.message; products = []; render(); } }
-  document.querySelector('.filters').addEventListener('click', e => { const b = e.target.closest('[data-filter]'); if (!b) return; document.querySelectorAll('.filter').forEach(x => x.classList.remove('active')); b.classList.add('active'); active = b.dataset.filter; render(); });
-  search.addEventListener('input', render); document.getElementById('refresh').addEventListener('click', load);
-  grid.addEventListener('click', e => { const b = e.target.closest('[data-quick]'); if (!b) return; const p = products.find(x => String(x.id) === String(b.dataset.quick)); if (!p) return; document.getElementById('quick-image').src = AP.productImage(p); document.getElementById('quick-image').alt = p.nome; document.getElementById('quick-name').textContent = p.nome; document.getElementById('quick-desc').textContent = p.descricao || 'Conheça a fragrância em detalhes.'; document.getElementById('quick-price').textContent = AP.price(p.preco); document.getElementById('quick-details').href = `/detalhes.html?id=${encodeURIComponent(p.id)}`; const w = AP.whatsappUrl(p); const interest = document.getElementById('quick-interest'); interest.textContent = AP.ctaLabel(p); interest.href = w || '#'; interest.target = w ? '_blank' : '_self'; interest.onclick = w ? null : (ev => { ev.preventDefault(); AP.toast('WhatsApp ainda não configurado.') }); modal.showModal(); });
-  document.getElementById('quick-close').addEventListener('click', () => modal.close()); modal.addEventListener('click', e => { if (e.target === modal) modal.close() });
-  await load();
+
+  function matches(p) {
+    const q = search.value.trim().toLowerCase();
+    const text = `${p.nome || ''} ${p.descricao || ''}`.toLowerCase();
+    const byQ = !q || text.includes(q);
+    const byF = active === 'todos' || (active === 'disponiveis' && p.estoque !== 0) || (active === 'novos' && p.novo) || (active === 'destaques' && (p.destaque || p.recomendado));
+    return byQ && byF;
+  }
+  function render() {
+    grid.replaceChildren();
+    const list = products.filter(matches);
+    list.forEach(p => grid.append(AP.card(p, { quick: true })));
+    empty.hidden = list.length > 0;
+    status.textContent = `${products.length} fragrância${products.length === 1 ? '' : 's'} no catálogo`;
+  }
+  async function load(force=false) {
+    if(force) status.textContent = 'Atualizando catálogo…';
+    try {
+      const result = await AP.loadCatalog({force});
+      products = result.products;
+      render();
+    } catch (e) {
+      status.textContent = e.message;
+      if(!products.length){ products = []; render(); }
+    }
+  }
+
+  window.addEventListener('ap:catalog-updated',e=>{
+    products=e.detail.products||[];
+    render();
+  });
+
+  document.querySelector('.filters').addEventListener('click', e => {
+    const b = e.target.closest('[data-filter]'); if (!b) return;
+    document.querySelectorAll('.filter').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); active = b.dataset.filter; render();
+  });
+  search.addEventListener('input', render);
+  document.getElementById('refresh').addEventListener('click', () => load(true));
+  grid.addEventListener('click', e => {
+    const b = e.target.closest('[data-quick]'); if (!b) return;
+    const p = products.find(x => String(x.id) === String(b.dataset.quick)); if (!p) return;
+    document.getElementById('quick-image').src = AP.productImage(p);
+    document.getElementById('quick-image').alt = p.nome;
+    document.getElementById('quick-name').textContent = p.nome;
+    document.getElementById('quick-desc').textContent = p.descricao || 'Conheça a fragrância em detalhes.';
+    document.getElementById('quick-price').textContent = AP.price(p.preco);
+    document.getElementById('quick-details').href = AP.detailHref(p.id, 'catalogo');
+    const w = AP.whatsappUrl(p), interest = document.getElementById('quick-interest');
+    interest.textContent = AP.ctaLabel(p); interest.href = w || '#'; interest.target = w ? '_blank' : '_self';
+    interest.onclick = w ? null : (ev => { ev.preventDefault(); AP.toast('WhatsApp ainda não configurado.') });
+    modal.showModal();
+  });
+  document.getElementById('quick-close').addEventListener('click', () => modal.close());
+  modal.addEventListener('click', e => { if (e.target === modal) modal.close() });
+  await load(false);
 });
