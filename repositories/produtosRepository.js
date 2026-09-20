@@ -6,6 +6,7 @@ const COLUNAS = Object.freeze({
     nome: "nome",
     descricao: "descricao",
     preco: "preco",
+    volumeMl: "volume_ml",
     imagem: "imagem",
     instagram: "instagram_url",
     estoque: "estoque",
@@ -23,6 +24,7 @@ function mapear(row) {
         nome: row.nome ?? null,
         descricao: row.descricao ?? null,
         preco: row.preco === null || row.preco === undefined ? null : Number(row.preco),
+        volumeMl: row.volume_ml === null || row.volume_ml === undefined ? null : Number(row.volume_ml),
         imagem: row.imagem ?? null,
         instagram: row.instagram_url ?? null,
         estoque: row.estoque === null || row.estoque === undefined ? null : Number(row.estoque),
@@ -56,6 +58,7 @@ function criarRepositorioProdutos(pool) {
             nome: dados.nome,
             descricao: dados.descricao ?? null,
             preco: dados.preco ?? null,
+            volumeMl: dados.volumeMl ?? null,
             imagem: dados.imagem ?? null,
             instagram: dados.instagram ?? null,
             estoque: dados.estoque !== undefined ? dados.estoque : 0,
@@ -67,10 +70,10 @@ function criarRepositorioProdutos(pool) {
         };
         const { rows } = await pool.query(
             `INSERT INTO manual_products
-             (id,nome,descricao,preco,imagem,instagram_url,estoque,ativo,destaque,recomendado,novo,arquivado)
-             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+             (id,nome,descricao,preco,volume_ml,imagem,instagram_url,estoque,ativo,destaque,recomendado,novo,arquivado)
+             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
              RETURNING *`,
-            [id, produto.nome, produto.descricao, produto.preco, produto.imagem, produto.instagram,
+            [id, produto.nome, produto.descricao, produto.preco, produto.volumeMl, produto.imagem, produto.instagram,
                 produto.estoque, produto.ativo, produto.destaque, produto.recomendado, produto.novo, produto.arquivado]
         );
         return mapear(rows[0]);

@@ -28,6 +28,17 @@ function numeroPreco(valor) {
     return Math.round(numero * 100) / 100;
 }
 
+function numeroVolumeMl(valor) {
+    if (valor === undefined) return undefined;
+    if (valor === null || valor === "") return null;
+    const normalizado = typeof valor === "string" ? valor.trim().replace(",", ".") : valor;
+    const numero = Number(normalizado);
+    if (!Number.isFinite(numero) || numero <= 0 || numero > 10000) {
+        throw new AppError("volumeMl deve ser um número maior que zero e de até 10000 mL.", "VALIDATION_ERROR", 422);
+    }
+    return Math.round(numero * 100) / 100;
+}
+
 function inteiroEstoque(valor) {
     if (valor === undefined) return undefined;
     if (valor === null || valor === "") return null;
@@ -89,6 +100,7 @@ function sanitizarProduto(entrada, { criacao = false } = {}) {
     if (criacao || entrada.nome !== undefined) patch.nome = texto(entrada.nome, "nome", { obrigatorio: criacao, max: 120 });
     if (entrada.descricao !== undefined) patch.descricao = texto(entrada.descricao, "descricao", { max: 1200 });
     if (entrada.preco !== undefined) patch.preco = numeroPreco(entrada.preco);
+    if (entrada.volumeMl !== undefined) patch.volumeMl = numeroVolumeMl(entrada.volumeMl);
     if (entrada.imagem !== undefined) patch.imagem = imagemSegura(entrada.imagem);
     if (entrada.instagram !== undefined) patch.instagram = urlHttps(entrada.instagram, "instagram");
     if (entrada.estoque !== undefined) patch.estoque = inteiroEstoque(entrada.estoque);

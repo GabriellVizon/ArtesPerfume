@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('quick-name').textContent = p.nome;
     document.getElementById('quick-desc').textContent = p.descricao || 'Conheça a fragrância em detalhes.';
     document.getElementById('quick-price').textContent = AP.price(p.preco);
+    document.getElementById('quick-volume').textContent = `Volume: ${AP.volumeLabel(p.volumeMl)}`;
     document.getElementById('quick-details').href = AP.detailHref(p.id, 'catalogo');
     const w = AP.whatsappUrl(p), interest = document.getElementById('quick-interest');
     interest.textContent = AP.ctaLabel(p); interest.href = w || '#'; interest.target = w ? '_blank' : '_self';

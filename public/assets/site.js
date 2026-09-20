@@ -19,6 +19,7 @@
     catch { return null; }
   }
   function price(value){ return typeof value === 'number' ? money.format(value) : 'Preço sob consulta'; }
+  function volumeLabel(value){ return typeof value === 'number' && Number.isFinite(value) && value > 0 ? `${value.toLocaleString('pt-BR',{maximumFractionDigits:2})} mL` : 'Não informado'; }
   function getFavorites(){
     try { const parsed = JSON.parse(localStorage.getItem(FAVORITOS_KEY) || '[]'); return Array.isArray(parsed) ? [...new Set(parsed.map(String))] : []; }
     catch { return []; }
@@ -43,7 +44,8 @@
   function whatsappUrl(product, customMessage){
     const phone = String(product?.whatsapp || window.AP_CONFIG?.whatsapp || '').replace(/\D/g, '');
     if (!/^\d{10,15}$/.test(phone)) return null;
-    const msg = customMessage || `Olá! Tenho interesse no perfume ${product.nome}${typeof product.preco === 'number' ? `, no valor de ${price(product.preco)}` : ''}. Gostaria de saber mais sobre a disponibilidade.`;
+    const volume = typeof product?.volumeMl === 'number' && Number.isFinite(product.volumeMl) && product.volumeMl > 0 ? ` (${volumeLabel(product.volumeMl)})` : '';
+    const msg = customMessage || `Olá! Tenho interesse no perfume ${product.nome}${volume}${typeof product.preco === 'number' ? `, no valor de ${price(product.preco)}` : ''}. Gostaria de saber mais sobre a disponibilidade.`;
     return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
   }
   function toast(text){
@@ -248,5 +250,5 @@
     return window.AP_CONFIG || {};
   }
 
-  window.AP={escapeHtml,price,getFavorites,setFavorites,isFavorite,toggleFavorite,updateFavoriteCounters,statusLabel,ctaLabel,whatsappUrl,toast,fetchJson,loadConfig,loadCatalog,refreshCatalog,getCachedProduct,invalidateCatalogCache,productImage,productBadges,currentDetailSource,detailHref,card,bindFavoriteButtons,setActiveNav,syncBrand,initShell,safeUrl,safeImageSource,prefetchHref};
+  window.AP={escapeHtml,price,volumeLabel,getFavorites,setFavorites,isFavorite,toggleFavorite,updateFavoriteCounters,statusLabel,ctaLabel,whatsappUrl,toast,fetchJson,loadConfig,loadCatalog,refreshCatalog,getCachedProduct,invalidateCatalogCache,productImage,productBadges,currentDetailSource,detailHref,card,bindFavoriteButtons,setActiveNav,syncBrand,initShell,safeUrl,safeImageSource,prefetchHref};
 })();

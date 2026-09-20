@@ -21,3 +21,10 @@ Esta versão foi pensada para aprovação visual, não como identidade final.
 - URL HTTPS continua disponível como alternativa.
 - A tela pública de Contato foi removida, assim como os links que apontavam para ela.
 - O atendimento de interesse em um perfume continua sendo feito diretamente pelo botão de WhatsApp nos detalhes e na visualização rápida.
+
+
+## 3.2 — Volume em mL
+- Campo `volumeMl` no cadastro/edição do painel.
+- Persistência em PostgreSQL/Supabase (`volume_ml`).
+- Exibição do volume na página individual do perfume.
+- Volume também é incluído na mensagem de interesse do WhatsApp quando informado.

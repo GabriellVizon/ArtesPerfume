@@ -145,3 +145,5 @@
   .sidebar-close:hover{background:var(--primary2);color:#fff}
   .sidebar .side-brand{padding-right:42px}
 }
+
+.preview-volume{margin:5px 0 10px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}

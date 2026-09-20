@@ -71,10 +71,11 @@ test("login, CRUD, dashboard e logout funcionam de ponta a ponta", async () => {
         const criadoResp = await fetch(`${base}/api/admin/produtos`, {
             method: "POST",
             headers: jsonHeaders(cookie),
-            body: JSON.stringify({ nome: "Produto Manual", preco: 59.9, estoque: 2, destaque: true })
+            body: JSON.stringify({ nome: "Produto Manual", preco: 59.9, volumeMl: 100, estoque: 2, destaque: true })
         });
         assert.equal(criadoResp.status, 201);
         const criado = await criadoResp.json();
+        assert.equal(criado.volumeMl, 100);
 
         const estoque = await fetch(`${base}/api/admin/produtos/${criado.id}/estoque`, {
             method: "PATCH", headers: jsonHeaders(cookie), body: JSON.stringify({ delta: 2 })

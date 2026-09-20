@@ -13,6 +13,7 @@ function criarProdutosRepoMemoria() {
             nome: patch.nome ?? anterior.nome,
             descricao: patch.descricao !== undefined ? patch.descricao : (anterior.descricao ?? null),
             preco: patch.preco !== undefined ? patch.preco : (anterior.preco ?? null),
+            volumeMl: patch.volumeMl !== undefined ? patch.volumeMl : (anterior.volumeMl ?? null),
             imagem: patch.imagem !== undefined ? patch.imagem : (anterior.imagem ?? null),
             instagram: patch.instagram !== undefined ? patch.instagram : (anterior.instagram ?? null),
             estoque: patch.estoque !== undefined ? patch.estoque : (anterior.estoque ?? 0),

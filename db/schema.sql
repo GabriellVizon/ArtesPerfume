@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS manual_products (
     nome VARCHAR(120) NOT NULL,
     descricao VARCHAR(1200),
     preco NUMERIC(12,2),
+    volume_ml NUMERIC(8,2),
     imagem TEXT,
     instagram_url TEXT,
     estoque INTEGER,
@@ -42,6 +43,7 @@ CREATE TABLE IF NOT EXISTS manual_products (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     CONSTRAINT manual_products_preco_check CHECK (preco IS NULL OR preco >= 0),
+    CONSTRAINT manual_products_volume_ml_check CHECK (volume_ml IS NULL OR (volume_ml > 0 AND volume_ml <= 10000)),
     CONSTRAINT manual_products_estoque_check CHECK (estoque IS NULL OR estoque >= 0)
 );
 
@@ -50,6 +52,7 @@ CREATE TABLE IF NOT EXISTS product_overrides (
     nome VARCHAR(120),
     descricao VARCHAR(1200),
     preco NUMERIC(12,2),
+    volume_ml NUMERIC(8,2),
     imagem TEXT,
     instagram_url TEXT,
     estoque INTEGER,
@@ -61,7 +64,17 @@ CREATE TABLE IF NOT EXISTS product_overrides (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     CONSTRAINT product_overrides_preco_check CHECK (preco IS NULL OR preco >= 0),
+    CONSTRAINT product_overrides_volume_ml_check CHECK (volume_ml IS NULL OR (volume_ml > 0 AND volume_ml <= 10000)),
     CONSTRAINT product_overrides_estoque_check CHECK (estoque IS NULL OR estoque >= 0)
 );
+
+-- Migração idempotente para bancos já existentes (ex.: Supabase em produção).
+ALTER TABLE manual_products
+    ADD COLUMN IF NOT EXISTS volume_ml NUMERIC(8,2)
+    CHECK (volume_ml IS NULL OR (volume_ml > 0 AND volume_ml <= 10000));
+
+ALTER TABLE product_overrides
+    ADD COLUMN IF NOT EXISTS volume_ml NUMERIC(8,2)
+    CHECK (volume_ml IS NULL OR (volume_ml > 0 AND volume_ml <= 10000));
 
 COMMIT;

@@ -732,7 +732,7 @@ img {
 
 .details-meta {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   margin-top: 18px
 }
@@ -1202,7 +1202,7 @@ img {
   }
 
   .details-meta {
-    grid-template-columns: 1fr 1fr
+    grid-template-columns: 1fr
   }
 
   .favorite-card {
@@ -1256,3 +1256,4 @@ img {
     padding-bottom: 100px
   }
 }
+.quick-volume{margin:4px 0 14px!important;font-size:13px!important;font-weight:800;color:var(--primary)!important}

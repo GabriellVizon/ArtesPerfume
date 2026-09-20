@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded',async()=>{
     const raw=el('preco').value.trim().replace(/\./g,'').replace(',','.');
     const num=raw===''?null:Number(raw);
     el('preview-price').textContent=Number.isFinite(num)?AdminAP.money(num):'Preço sob consulta';
+    const volume=Number(el('volume-ml').value);
+    el('preview-volume').textContent=Number.isFinite(volume)&&volume>0?`${volume.toLocaleString('pt-BR',{maximumFractionDigits:2})} mL`:'Volume não informado';
     el('preview-desc').textContent=el('descricao').value.trim()||'A descrição aparecerá aqui.';
 
     const typedUrl=el('imagem').value.trim();
@@ -56,6 +58,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
   function fill(p){
     el('nome').value=p.nome||'';
     el('preco').value=p.preco??'';
+    el('volume-ml').value=p.volumeMl??'';
     el('estoque').value=p.estoque??'';
     el('imagem').value=/^https:\/\//i.test(p.imagem||'')?p.imagem:'';
     el('descricao').value=p.descricao||'';
@@ -175,6 +178,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
       nome:el('nome').value,
       descricao:el('descricao').value||null,
       preco:el('preco').value||null,
+      volumeMl:el('volume-ml').value===''?null:Number(el('volume-ml').value),
       estoque:el('estoque').value===''?null:Number(el('estoque').value),
       imagem:imageValue||null,
       ativo:el('ativo').checked,

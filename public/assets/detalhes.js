@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded',async()=>{
     document.getElementById('details-name').textContent=p.nome;
     document.getElementById('details-description').textContent=p.descricao||'Fale com o atelier para conhecer melhor esta fragrância.';
     document.getElementById('details-price').textContent=AP.price(p.preco);
+    document.getElementById('details-volume').textContent=AP.volumeLabel(p.volumeMl);
     document.getElementById('details-stock').textContent=AP.statusLabel(p);
     document.getElementById('details-source').textContent=p.origem==='manual'?'Cadastro da loja':p.origem==='instagram'?'Curadoria da loja':'Acervo da loja';
     const badges=document.getElementById('details-badges');badges.replaceChildren();

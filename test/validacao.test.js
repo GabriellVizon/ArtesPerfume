@@ -27,3 +27,11 @@ test("cookie de sessão é HttpOnly e pode ser removido", () => {
     assert.equal(lerCookies("x=1; ap_session=abc123").ap_session, "abc123");
     assert.match(limparCookie("ap_session"), /Max-Age=0/);
 });
+
+
+test("validação aceita volume do perfume em mL e rejeita valores inválidos", () => {
+    assert.equal(sanitizarProduto({ volumeMl: 100 }).volumeMl, 100);
+    assert.equal(sanitizarProduto({ volumeMl: "1,5" }).volumeMl, 1.5);
+    assert.throws(() => sanitizarProduto({ volumeMl: 0 }), { code: "VALIDATION_ERROR" });
+    assert.throws(() => sanitizarProduto({ volumeMl: -50 }), { code: "VALIDATION_ERROR" });
+});

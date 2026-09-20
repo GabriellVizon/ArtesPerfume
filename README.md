@@ -11,7 +11,7 @@ Versão de apresentação para validação visual com a cliente. Mantém a base 
 
 ### Fluxo de interesse
 
-O projeto não possui carrinho ou checkout. Na tela de detalhes o CTA principal é **Tenho interesse**. O WhatsApp é aberto com o nome e o preço do perfume já inseridos na mensagem.
+O projeto não possui carrinho ou checkout. Na tela de detalhes o CTA principal é **Tenho interesse**. O WhatsApp é aberto com o nome, o volume em mL (quando informado) e o preço do perfume já inseridos na mensagem.
 
 Quando o produto está sem estoque, o CTA passa a ser **Consultar disponibilidade**.
 
@@ -30,6 +30,7 @@ A administração continua usando sessão segura em cookie `HttpOnly` e PostgreS
 - Produtos manuais.
 - Overrides de produtos vindos do Instagram.
 - Estoque.
+- Volume do perfume em mL.
 - Ativo/inativo.
 - Destaque.
 - Recomendado.
@@ -134,3 +135,16 @@ O projeto mantém `Dockerfile`, `render.yaml`, `.env.production.example` e `DEPL
 Na V3.1, ao cadastrar ou editar um perfume, o administrador pode escolher uma foto diretamente do celular ou computador. A imagem é reduzida/otimizada no navegador e salva no campo de imagem do produto no PostgreSQL. Também é possível continuar usando uma URL HTTPS.
 
 A tela pública de Contato foi removida. O fluxo público principal agora é Início → Catálogo → Detalhes → Favoritos, com atendimento pelo WhatsApp a partir dos perfumes.
+
+
+## Volume em mL (V3.2)
+
+O cadastro/edição de perfume no painel possui o campo **Volume do perfume (mL)**. O valor é salvo como `volumeMl` na API e `volume_ml` no PostgreSQL/Supabase. A página individual e a visão rápida do catálogo exibem esse valor.
+
+Para um banco que já existia antes desta atualização, rode:
+
+```powershell
+npm run db:migrate
+```
+
+Ou execute no SQL Editor do Supabase o arquivo `db/migrations/20260920_add_volume_ml.sql`.

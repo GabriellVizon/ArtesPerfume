@@ -26,9 +26,10 @@ function servico() {
 
 test("CRUD manual e estoque funcionam com repositório assíncrono", async () => {
     const produtos = servico();
-    const criado = await produtos.criar({ nome: "Manual", preco: "59,90", estoque: 2, destaque: true });
+    const criado = await produtos.criar({ nome: "Manual", preco: "59,90", volumeMl: 100, estoque: 2, destaque: true });
     assert.equal(criado.origem, "manual");
     assert.equal(criado.preco, 59.9);
+    assert.equal(criado.volumeMl, 100);
     assert.equal((await produtos.estoque(criado.id, { delta: 3 })).estoque, 5);
     assert.equal((await produtos.atualizar(criado.id, { recomendado: true })).recomendado, true);
     assert.equal((await produtos.listar()).produtos.length, 2);
@@ -38,9 +39,10 @@ test("CRUD manual e estoque funcionam com repositório assíncrono", async () =>
 
 test("produto do Instagram recebe override e pode ser arquivado", async () => {
     const produtos = servico();
-    const editado = await produtos.atualizar("ig_1", { nome: "Nome da Loja", estoque: 4, recomendado: true });
+    const editado = await produtos.atualizar("ig_1", { nome: "Nome da Loja", volumeMl: 50, estoque: 4, recomendado: true });
     assert.equal(editado.nome, "Nome da Loja");
     assert.equal(editado.estoque, 4);
+    assert.equal(editado.volumeMl, 50);
     assert.equal((await produtos.listar()).produtos[0].nome, "Nome da Loja");
     await produtos.remover("ig_1");
     assert.deepEqual((await produtos.listar()).produtos, []);
